@@ -15,6 +15,7 @@ def load_config(filename):
     Returns:
         dict
     """
+
     with open(filename) as file:
         config = json.load(file)
 

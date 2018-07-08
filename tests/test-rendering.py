@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--width', type=int, default=800)
     parser.add_argument('--height', type=int, default=600)
     parser.add_argument('--device', type=int, default=0)
-    parser.add_argument('--interactive', action='store_true',
+    parser.add_argument('wwwwwwwww', action='store_true',
         help='run interactive rendering (does not work under ssh)')
     args = parser.parse_args()
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     cam = api.getCamera()
 
     modes = [RenderMode.RGB, RenderMode.SEMANTIC, RenderMode.INSTANCE, RenderMode.DEPTH]
-    for t in tqdm.trange(10000):
+    for t in tqdm.trange(1000000):
         mode = modes[t % len(modes)]
         api.setMode(mode)
         mat = np.array(api.render())

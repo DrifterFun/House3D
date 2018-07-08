@@ -6,10 +6,10 @@
 
 import csv
 import cv2
-import itertools
+import itertools #循环器
 import json
 import numpy as np
-import pickle
+import pickle #pickle 是一个 python 中, 压缩/保存/提取 文件的模块
 import time
 
 __all__ = ['House']
@@ -30,7 +30,7 @@ def _equal_room_tp(room, target):
     NOTE: Ensure <target> is always from <ALLOWED_TARGET_ROOM_TYPES>!!!!
             DO NOT swap the order of arguments
     """
-    room = room.lower()
+    room = room.lower()  #Python lower() 方法转换字符串中所有大写字符为小写。
     target = target.lower()
     return (room == target) or \
             ((target == 'bathroom') and (room == 'toilet')) or \
@@ -88,11 +88,11 @@ def parse_walls(objFile, lower_bound = 1.0):
     return ret_walls
 
 
-def fill_region(proj, x1, y1, x2, y2, c):
+def fill_region(proj, x1, y1, x2, y2, c): #二维数组的补空
     proj[x1:(x2 + 1), y1:(y2 + 1)] = c
 
 
-def fill_obj_mask(house, dest, obj, c=1):
+def fill_obj_mask(house, dest, obj, c=1): #还不太能够看得懂,貌似是fill掉dest中的洞
     n_row = dest.shape[0]
     _x1, _, _y1 = obj['bbox']['min']
     _x2, _, _y2 = obj['bbox']['max']
@@ -147,7 +147,7 @@ class House(object):
         self.robotHei = RobotHeight
         self.carpetHei = CarpetHeight
         self.robotRad = RobotRadius
-        self._debugMap = None if not DebugInfoOn else True
+        self._debugMap = None if not DebugInfoOn else True #DebugInfoOn是一个bool变量
         with open(JsonFile) as jfile:
             self.house = house = json.load(jfile)
         self.all_walls = parse_walls(ObjFile, RobotHeight)
@@ -165,15 +165,15 @@ class House(object):
         self.L_max_coor = _L_hi = np.array(level['bbox']['max'])
         self.L_hi = max(_L_hi[0], _L_hi[2])
         self.L_det = self.L_hi - self.L_lo
-        self.n_row = ColideRes
-        self.eagle_n_row = EagleViewRes
+        self.n_row = ColideRes #resolution of the 2d map for collision check 
+        self.eagle_n_row = EagleViewRes #resolution of the topdown 2d map
         self.grid_det = self.L_det / self.n_row
         self.all_obj = [node for node in level['nodes'] if node['type'].lower() == 'object']
         self.all_rooms = [node for node in level['nodes'] if (node['type'].lower() == 'room') and ('roomTypes' in node)]
         self.all_roomTypes = [room['roomTypes'] for room in self.all_rooms]
         self.all_desired_roomTypes = []
         self.default_roomTp = None
-        for roomTp in ALLOWED_TARGET_ROOM_TYPES:
+        for roomTp in ALLOWED_TARGET_ROOM_TYPES:  #roomTp = roomType
             if any([any([_equal_room_tp(tp, roomTp) for tp in tps]) for tps in self.all_roomTypes]):
                 self.all_desired_roomTypes.append(roomTp)
                 if self.default_roomTp is None: self.default_roomTp = roomTp
@@ -320,7 +320,7 @@ class House(object):
         return ret_comps
 
     """
-    Sets self.connMap to distances to target point with some margin
+    Sets self.connMap to  to target point with some margin
     """
     def setTargetPoint(self, x, y, margin_x=15, margin_y=15):
         self.connMap = connMap = np.ones((self.n_row+1, self.n_row+1), dtype=np.int32) * -1
