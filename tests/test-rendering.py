@@ -21,13 +21,13 @@ if __name__ == '__main__':
     parser.add_argument('--width', type=int, default=800)
     parser.add_argument('--height', type=int, default=600)
     parser.add_argument('--device', type=int, default=0)
-    parser.add_argument('wwwwwwwww', action='store_true',
+    parser.add_argument('--interactive', action='store_true',
         help='run interactive rendering (does not work under ssh)')
     args = parser.parse_args()
 
     cfg = create_default_config('.')
 
-    api = objrender.RenderAPI(args.width, args.height, device=args.device)
+    api = objrender.RenderAPI(args.width, args.height, device=args.device)  #声明一个api,调用了预先编译的库
     api.printContextInfo()
 
     api.loadScene(args.obj, cfg['modelCategoryFile'], cfg['colorFile'])
@@ -38,8 +38,9 @@ if __name__ == '__main__':
         mode = modes[t % len(modes)]
         api.setMode(mode)
         mat = np.array(api.render())
+        print(mat.shape)
         if mode == RenderMode.DEPTH:
-            infmask = mat[:, :, 1]
+            infmask = mat[:, :, 1]  #这里应该是指无限远的Mask, 无限远的话infmask=1
             mat = mat[:, :, 0] * (infmask == 0)
         else:
             mat = mat[:, :, ::-1]   # cv expects bgr
