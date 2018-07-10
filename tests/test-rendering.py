@@ -35,7 +35,8 @@ if __name__ == '__main__':
 
     modes = [RenderMode.RGB, RenderMode.SEMANTIC, RenderMode.INSTANCE, RenderMode.DEPTH]
     for t in tqdm.trange(1000000):
-        mode = modes[t % len(modes)]
+        #mode = modes[t % len(modes)]
+        mode = RenderMode.RGB
         api.setMode(mode)
         mat = np.array(api.render())
         print(mat.shape)
@@ -59,12 +60,12 @@ if __name__ == '__main__':
             elif key == ord('d') or key == 83:
                 cam.pos += cam.right * 0.5
             elif key == ord('h'):
-                cam.yaw -= 5
+                cam.yaw -= 90
                 # need to call updateDirection to make the change to yaw/pitch
                 # take effect
                 cam.updateDirection()
             elif key == ord('l'):
-                cam.yaw += 5
+                cam.yaw += 90
                 cam.updateDirection()
             elif key == 82:
                 cam.pos += cam.up * 0.5

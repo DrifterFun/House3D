@@ -14,7 +14,7 @@ from House3D import objrender, Environment, load_config
 
 if __name__ == '__main__':
     api = objrender.RenderAPI(w=600, h=450, device=0)
-    cfg = load_config('config.json ')
+    cfg = load_config('config.json')
 
     env = Environment(api, '00065ecbdd7300d35ef4328ffe871505', cfg)
 
