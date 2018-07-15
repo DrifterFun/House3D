@@ -241,8 +241,8 @@ void SUNCGScene::parse_scene() {
 }
 
 void SUNCGScene::draw() {
-  glClearColor(background_color_.x, background_color_.y, background_color_.z, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(background_color_.x, background_color_.y, background_color_.z, 1.0f); //OpenGL在每一帧开始要调用 glClearColor
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //https://blog.csdn.net/shuaihj/article/details/7230138
 
   int nr_mesh = mesh_.size();
   if (mode_ == RenderMode::RGB) {

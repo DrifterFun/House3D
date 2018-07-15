@@ -36,7 +36,7 @@ def _equal_room_tp(room, target):
             ((target == 'bathroom') and (room == 'toilet')) or \
             ((target == 'bedroom') and (room == 'guest_room'))
 
-def _get_pred_room_tp_id(room):
+def _get_pred_room_tp_id(room):    #得到房间的ID号
     room = room.lower()
     if room == 'toilet':
         room = 'bathroom'
@@ -368,7 +368,7 @@ class House(object):
         return True
 
     """
-    set the distance to a particular room type
+    set the distance to a particular room type   设置到特定房间类型的距离
     """
     def setTargetRoom(self, targetRoomTp = 'kitchen', _setEagleMap = False):
         targetRoomTp = targetRoomTp.lower()
@@ -383,7 +383,7 @@ class House(object):
             self.connMap, self.connectedCoors, self.inroomDist, self.maxConnDist = self.connMapDict[targetRoomTp]
             return True  # room Changed!
         self.targetRooms = targetRooms = \
-            [room for room in self.all_rooms if any([ _equal_room_tp(tp, targetRoomTp) for tp in room['roomTypes']])]
+            [room for room in self.all_rooms if any([ _equal_room_tp(tp, targetRoomTp) for tp in room['roomTypes']])]   #targetRooms是指所有在house里的room
         assert (len(targetRooms) > 0), '[House] no room of type <{}> in the current house!'.format(targetRoomTp)
         ##########
         # generate destination mask map
@@ -395,7 +395,7 @@ class House(object):
                 x1,y1,x2,y2 = self.rescale(_x1,_y1,_x2,_y2,self.eagleMap.shape[1]-1)
                 self.eagleMap[1, x1:(x2+1), y1:(y2+1)]=1
         print('[House] Caching New ConnMap for Target <{}>! (total {} rooms involved)'.format(targetRoomTp,len(targetRooms)))
-        self.connMap = connMap = np.ones((self.n_row+1, self.n_row+1), dtype=np.int32) * -1
+        self.connMap = connMap = np.ones((self.n_row+1, self.n_row+1), dtype=np.int32) * -1  #初始化
         self.inroomDist = inroomDist = np.ones((self.n_row+1, self.n_row+1), dtype=np.float32) * -1
         dirs = [[0, 1], [1, 0], [-1, 0], [0, -1]]
         que = []
@@ -403,10 +403,10 @@ class House(object):
             if not flag_find_open_components:
                 print('WARINING!!!! [House] No Space Found for Room Type {}! Now search even for closed region!!!'.format(targetRoomTp))
             for room in targetRooms:
-                _x1, _, _y1 = room['bbox']['min']
+                _x1, _, _y1 = room['bbox']['min']   #_是占位符
                 _x2, _, _y2 = room['bbox']['max']
-                cx, cy = (_x1 + _x2) / 2, (_y1 + _y2) / 2
-                x1,y1,x2,y2 = self.rescale(_x1,_y1,_x2,_y2)
+                cx, cy = (_x1 + _x2) / 2, (_y1 + _y2) / 2   #找到中心点
+                x1,y1,x2,y2 = self.rescale(_x1,_y1,_x2,_y2) #取下整变为整数
                 curr_components = self._find_components(x1, y1, x2, y2, dirs=dirs, return_open=flag_find_open_components)  # find all the open components
                 if len(curr_components) == 0:
                     print('WARNING!!!! [House] No Space Found in TargetRoom <tp=%s, bbox=[%.2f, %2f] x [%.2f, %.2f]>' %
@@ -487,7 +487,7 @@ class House(object):
         if len(room_locs) == 0:
             return None
         idx = np.random.choice(len(room_locs))
-        return self.to_coor(room_locs[idx][0], room_locs[idx][1], True)
+        return self.to_coor(room_locs[idx][0], room_locs[idx][1], True)  #由网格坐标转化到SUNCG中的坐标
 
 
     def _getValidRoomLocations(self, room_node):

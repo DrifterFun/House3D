@@ -48,7 +48,7 @@ class SUNCGScene : public ObjSceneBase {
         std::string obj_file,
         std::string model_category_file,
         std::string semantic_label_file,
-        float minDepth = 0.3);
+        float minDepth = 0.3);     //什么意思?最小的Depth?构造函数
     ~SUNCGScene() {}
 
     void draw() override;
@@ -66,8 +66,8 @@ class SUNCGScene : public ObjSceneBase {
     };
 
     enum class ObjectNameResolution {
-      COARSE = 0,   // use its coarse class name
-      FINE = 1      // use its fine class name
+      COARSE = 0,   // use its coarse class name 利用粗分类的序号
+      FINE = 1      // use its fine class name  利用细分类的序号
     };
 
     void set_mode(RenderMode m) { mode_ = m; }
